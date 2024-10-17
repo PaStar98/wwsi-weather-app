@@ -4,6 +4,8 @@ import FindWeatherPage from './routes/FindWeatherPage'
 import HomePage from './routes/HomePage'
 import Layout from './components/Layout'
 import CityWeatherDetailsPage from './routes/CityWeatherDetailsPage'
+import FindWeatherDetailsPage from './routes/FindWeatherDetailsPage'
+import NotFoundPage from './routes/NotFoundPage'
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ export const router = createBrowserRouter([
       {
         path: 'find-weather',
         element: <FindWeatherPage />,
+      },
+      {
+        path: 'find-weather/:city',
+        element: <FindWeatherDetailsPage />,
+      },
+      {
+        path: '/404',
+        element: <NotFoundPage />,
       },
     ],
   },

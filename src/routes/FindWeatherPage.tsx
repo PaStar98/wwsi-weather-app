@@ -1,15 +1,12 @@
 import { Button, Paper, TextField } from '@mui/material'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const FindWeatherPage: React.FC = () => {
   const [inputValue, setInputValue] = React.useState('')
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value)
-  }
-
-  const handleSubmit = () => {
-    alert(`Submitted Value: ${inputValue}`)
   }
 
   return (
@@ -21,14 +18,11 @@ const FindWeatherPage: React.FC = () => {
         onChange={handleInputChange}
         fullWidth
       />
-      <Button
-        onClick={handleSubmit}
-        variant="contained"
-        color="primary"
-        style={{ marginTop: '20px' }}
-      >
-        Find Weather
-      </Button>
+      <Link to={`/find-weather/${inputValue}`}>
+        <Button variant="contained" color="primary" style={{ marginTop: '20px' }}>
+          Find Weather
+        </Button>
+      </Link>
     </Paper>
   )
 }

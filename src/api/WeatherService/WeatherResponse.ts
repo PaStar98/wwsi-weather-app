@@ -1,4 +1,5 @@
 interface WeatherResponse {
+  cod: string
   name: string
   main: {
     temp: string

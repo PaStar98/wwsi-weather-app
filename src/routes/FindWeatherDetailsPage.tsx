@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Box, Paper, Typography } from '@mui/material'
 import getRandomNumberInRange from '../utils/getRandomNumberInRange'
 import kelvinToCelsius from '../utils/kelvinToCelsius'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const FindWeatherDetailsPage: React.FC = () => {
   const { city } = useParams<{ city: string }>()
@@ -15,9 +16,11 @@ const FindWeatherDetailsPage: React.FC = () => {
 
   const [currentWeather, setCurrentWeather] = useState<WeatherResponse | null>(null)
   const [currentWeatherImage, setCurrentWeatherImage] = useState<PixabayResponse | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchCurrentWeather = async () => {
+      setLoading(true)
       const weatherService = new WeatherApiService()
       const weatherData: WeatherResponse = await weatherService.getWeatherByCity(city?.toString())
       if (weatherData.cod === '404') {
@@ -25,6 +28,7 @@ const FindWeatherDetailsPage: React.FC = () => {
       }
       setCurrentWeather(weatherData)
       console.log(weatherData)
+      setLoading(false)
     }
 
     fetchCurrentWeather()
@@ -32,16 +36,22 @@ const FindWeatherDetailsPage: React.FC = () => {
 
   useEffect(() => {
     const fetchWeatherImage = async () => {
+      setLoading(true)
       const weatherDescription = joinWordsWithPlus(currentWeather?.weather[0].description)
       const pixabayService = new PixabayApiService()
       const pixabayData: PixabayResponse =
         await pixabayService.getImageByCityWeather(weatherDescription)
       setCurrentWeatherImage(pixabayData)
       console.log(pixabayData)
+      setLoading(false)
     }
 
     fetchWeatherImage()
   }, [currentWeather])
+
+  if (loading) {
+    return <LoadingSpinner />
+  }
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', p: 2 }}>

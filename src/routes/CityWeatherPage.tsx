@@ -1,5 +1,4 @@
 import { Link as RouterLink } from 'react-router-dom'
-import { useCities } from '../contexts/CitiesContext'
 import {
   Button,
   Link,
@@ -10,18 +9,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material'
+import { useCities } from '../contexts/useCities'
 
 const CityWeatherPage: React.FC = () => {
   const cities = useCities()
 
   return (
     <>
-      <Typography sx={{ my: 5 }} variant="h4">
-        Wybierz miasto i sprawdź jaka jest obecnie pogoda
-      </Typography>
-      <TableContainer sx={{ padding: '.5rem 2rem' }} component={Paper}>
+      <TableContainer sx={{ mt: 5, padding: '.5rem 2rem' }} component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -43,7 +39,7 @@ const CityWeatherPage: React.FC = () => {
                 <TableCell align="right">{city.name}</TableCell>
                 <TableCell align="right">
                   <Link component={RouterLink} to={`/city-weather/${city.name}`} state={city.name}>
-                    <Button variant="contained">Sprawdź</Button>
+                    <Button variant="contained">Check</Button>
                   </Link>
                 </TableCell>
               </TableRow>

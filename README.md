@@ -51,7 +51,7 @@ export default tseslint.config({
 
 ## Environment Variables
 
-# .env.locale
+### .env.locale
 
 ```
 VITE_WEATHER_API_KEY="69677c21fad54e73e5f98634cdbaf7a8"

@@ -48,3 +48,15 @@ export default tseslint.config({
   },
 })
 ```
+
+## Environment Variables
+
+# .env.locale
+
+```
+VITE_WEATHER_API_KEY="69677c21fad54e73e5f98634cdbaf7a8"
+VITE_WEATHER_API_URL="https://api.openweathermap.org/data/2.5"
+
+VITE_PIXABAY_API_KEY="46554199-0678b6bc99afe57fa49237ceb"
+VITE_PIXABAY_API_URL="https://pixabay.com/api/"
+```

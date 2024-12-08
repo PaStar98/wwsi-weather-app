@@ -1,4 +1,4 @@
-# DEMO [[https://gilded-genie-fdff80.netlify.app/](https://wwsi-weather-app.netlify.app)](https://wwsi-weather-app.netlify.app)
+# DEMO https://wwsi-weather-app.netlify.app
 
 # React + TypeScript + Vite
 

@@ -9,17 +9,17 @@ class PixabayApiService {
     this.baseUrl = import.meta.env.VITE_PIXABAY_API_URL
   }
 
-  private getUrl(queryParams: Record<string, string> = {}): string {
+  private getUrl(queryParams: Record<string, string> = {}, cityName: string): string {
     const query = new URLSearchParams(queryParams).toString()
-    console.log(query)
-    return `${this.baseUrl}/?key=${this.apiKey}&${query}=${this.apiKey}`
+    return `${this.baseUrl}/?key=${this.apiKey}&${query}=${cityName}`
   }
 
   public async getImageByCityWeather(cityName: string | undefined): Promise<PixabayResponse> {
     if (!cityName) {
       throw new Error('City name is required')
     }
-    const url = this.getUrl({ q: cityName })
+    const url = this.getUrl({ q: cityName }, cityName)
+    console.log('url:', url)
     try {
       const response = await fetch(url)
       if (!response.ok) {

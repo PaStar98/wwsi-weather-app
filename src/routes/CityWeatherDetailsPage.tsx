@@ -15,37 +15,40 @@ const CityWeatherDetailsPage: React.FC = () => {
   const { city } = useParams<{ city: string }>()
   const [currentWeather, setCurrentWeather] = useState<WeatherResponse>()
   const [currentWeatherImage, setCurrentWeatherImage] = useState<PixabayResponse>()
-  const [loading, setLoading] = useState<boolean>(true)
+  const [weatherLoading, setWeatherLoading] = useState<boolean>(true)
+  const [imageLoading, setImageLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchCurrentWeather = async () => {
-      setLoading(true)
+      setWeatherLoading(true)
       const weatherService = new WeatherApiService()
       const weatherData: WeatherResponse = await weatherService.getWeatherByCity(city?.toString())
       setCurrentWeather(weatherData)
       console.log(weatherData)
-      setLoading(false)
+      setWeatherLoading(false)
     }
 
     fetchCurrentWeather()
   }, [city])
 
   useEffect(() => {
+    if (!currentWeather) return
+
     const fetchWeatherImage = async () => {
-      setLoading(true)
-      const weatherDescription = joinWordsWithPlus(currentWeather?.weather[0].description)
+      setImageLoading(true)
+      const weatherDescription = joinWordsWithPlus(currentWeather.weather[0].description)
       const pixabayService = new PixabayApiService()
       const pixabayData: PixabayResponse =
         await pixabayService.getImageByCityWeather(weatherDescription)
       setCurrentWeatherImage(pixabayData)
       console.log(pixabayData)
-      setLoading(false)
+      setImageLoading(false)
     }
 
     fetchWeatherImage()
   }, [currentWeather])
 
-  if (loading) {
+  if (weatherLoading || imageLoading) {
     return <LoadingSpinner />
   }
 

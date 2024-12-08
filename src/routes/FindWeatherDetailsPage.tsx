@@ -16,40 +16,56 @@ const FindWeatherDetailsPage: React.FC = () => {
 
   const [currentWeather, setCurrentWeather] = useState<WeatherResponse | null>(null)
   const [currentWeatherImage, setCurrentWeatherImage] = useState<PixabayResponse | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [weatherLoading, setWeatherLoading] = useState<boolean>(true)
+  const [imageLoading, setImageLoading] = useState<boolean>(true)
 
   useEffect(() => {
     const fetchCurrentWeather = async () => {
-      setLoading(true)
+      setWeatherLoading(true)
       const weatherService = new WeatherApiService()
-      const weatherData: WeatherResponse = await weatherService.getWeatherByCity(city?.toString())
-      if (weatherData.cod === '404') {
-        navigate('/404')
+      try {
+        const weatherData: WeatherResponse = await weatherService.getWeatherByCity(city?.toString())
+        if (weatherData.cod === '404') {
+          navigate('/404') // Przekierowanie na stronę 404
+          return
+        }
+        setCurrentWeather(weatherData)
+        console.log(weatherData)
+      } catch (error) {
+        console.error('Error fetching weather data:', error)
+        navigate('/404') // W razie błędu przekierowanie na stronę 404
+      } finally {
+        setWeatherLoading(false)
       }
-      setCurrentWeather(weatherData)
-      console.log(weatherData)
-      setLoading(false)
     }
 
-    fetchCurrentWeather()
+    if (city) {
+      fetchCurrentWeather()
+    }
   }, [city, navigate])
 
   useEffect(() => {
     const fetchWeatherImage = async () => {
-      setLoading(true)
-      const weatherDescription = joinWordsWithPlus(currentWeather?.weather[0].description)
-      const pixabayService = new PixabayApiService()
-      const pixabayData: PixabayResponse =
-        await pixabayService.getImageByCityWeather(weatherDescription)
-      setCurrentWeatherImage(pixabayData)
-      console.log(pixabayData)
-      setLoading(false)
-    }
+      if (!currentWeather) return
 
+      setImageLoading(true)
+      try {
+        const weatherDescription = joinWordsWithPlus(currentWeather.weather[0].description)
+        const pixabayService = new PixabayApiService()
+        const pixabayData: PixabayResponse =
+          await pixabayService.getImageByCityWeather(weatherDescription)
+        setCurrentWeatherImage(pixabayData)
+        console.log(pixabayData)
+      } catch (error) {
+        console.error('Error fetching weather image:', error)
+      } finally {
+        setImageLoading(false)
+      }
+    }
     fetchWeatherImage()
   }, [currentWeather])
 
-  if (loading) {
+  if (weatherLoading || imageLoading) {
     return <LoadingSpinner />
   }
 

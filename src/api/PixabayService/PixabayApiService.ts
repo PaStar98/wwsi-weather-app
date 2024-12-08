@@ -19,7 +19,7 @@ class PixabayApiService {
       throw new Error('City name is required')
     }
     const url = this.getUrl({ q: cityName }, cityName)
-    console.log('url:', url)
+    console.log('Pixabay URL:', url)
     try {
       const response = await fetch(url)
       if (!response.ok) {
